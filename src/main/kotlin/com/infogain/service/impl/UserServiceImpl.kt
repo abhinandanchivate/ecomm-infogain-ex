@@ -10,7 +10,8 @@ import com.infogain.repository.UserRepository
 import com.infogain.service.UserService
 import org.jetbrains.exposed.sql.transactions.transaction
 
-
+// exposed dao
+//
 class UserServiceImpl(private val userRepository: UserRepository) : UserService {
     override fun create(payload: UserRequestPayload): UserResponsePayload {
         return transaction {
@@ -20,8 +21,9 @@ class UserServiceImpl(private val userRepository: UserRepository) : UserService 
     }
 
     override fun findAll(): List<UserResponsePayload> =
-        userRepository.findAll().map { it.toResponse() }
-
+        transaction {
+            userRepository.findAll().map { it.toResponse() }
+        }
 //     fun findById(id: String): UserResponsePayload =
 //        userRepository.findById(id)?.toResponse()
 //            ?: throw NotFoundException("User with id $id not found")

@@ -15,6 +15,8 @@ class UserRepositoryImpl : UserRepository {
         val role = Role.findById(UUID.fromString(userPayload.roleId))
             ?: throw IllegalArgumentException("Role with ID ${userPayload.roleId} not found.")
 
+        // exposed dao will support for lazy loading .
+
         User.new {
             firstName = userPayload.firstName
             lastName = userPayload.lastName
