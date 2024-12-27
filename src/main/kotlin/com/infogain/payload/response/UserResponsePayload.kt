@@ -8,8 +8,7 @@ data class UserResponsePayload(
     val firstName: String,
     val lastName: String,
     val email: String,
-    val roleId: String,
-    val roleName: String,
+    val role : RoleResponsePayload,
     val createdAt: String,
     val updatedAt: String
 )

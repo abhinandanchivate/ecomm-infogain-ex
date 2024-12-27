@@ -17,7 +17,8 @@ fun initPostgresDatabase() {
 
 
     transaction {
-        SchemaUtils.create(UsersTable)
         SchemaUtils.create(RolesTable)
+        SchemaUtils.create(UsersTable)
+
     }
 }

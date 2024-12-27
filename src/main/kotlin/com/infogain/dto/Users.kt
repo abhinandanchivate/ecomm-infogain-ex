@@ -7,6 +7,7 @@ import org.jetbrains.exposed.dao.UUIDEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.UUIDTable
 import org.jetbrains.exposed.sql.kotlin.datetime.CurrentDateTime
+
 import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 import java.util.UUID
 
@@ -18,10 +19,8 @@ object UsersTable : UUIDTable("users") {
     val email = varchar("email", 100).uniqueIndex()
     val password = varchar("password", 255)
     val role = reference("role_id", RolesTable)
-    val createdAt = datetime("created_at").defaultExpression(CurrentDateTime)
-    // default value
+    val createdAt = datetime("created_at").defaultExpression(CurrentDateTime) // Proper initialization
     val updatedAt = datetime("updated_at").defaultExpression(CurrentDateTime)
-    // override :
 }
 
 class User(id: EntityID<UUID>) : UUIDEntity(id) {

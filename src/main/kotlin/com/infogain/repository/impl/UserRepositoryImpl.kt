@@ -4,6 +4,9 @@ import com.infogain.dto.Role
 import com.infogain.dto.User
 import com.infogain.payload.request.UserRequestPayload
 import com.infogain.repository.UserRepository
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.toKotlinLocalDateTime
+import org.jetbrains.exposed.dao.load
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.UUID
 
@@ -17,8 +20,12 @@ class UserRepositoryImpl : UserRepository {
             lastName = userPayload.lastName
             email = userPayload.email
             password = userPayload.password
+            createdAt= java.time.LocalDateTime.now().toKotlinLocalDateTime()
+            updatedAt=java.time.LocalDateTime.now().toKotlinLocalDateTime()
             this.role = role
 
+        }.apply {
+            println("$firstName $lastName $createdAt")
         }
     }
 
@@ -35,13 +42,20 @@ class UserRepositoryImpl : UserRepository {
         val role = Role.findById(UUID.fromString(userPayload.roleId))
             ?: throw IllegalArgumentException("Role with ID ${userPayload.roleId} not found.")
 
+        println(role.id.toString())
+        println(role.name)
       user.apply {
             firstName = userPayload.firstName
             lastName = userPayload.lastName
             email = userPayload.email
             password = userPayload.password
             this.role = role
-        }
+          updatedAt = java.time.LocalDateTime.now().toKotlinLocalDateTime()
+      }
+
+        println("User updated successfully: ${user.id}")
+        user.load(User::role)
+        user
     }
 
     override fun delete(id: String): Boolean = transaction {
